@@ -1,0 +1,58 @@
+.message-color {
+    background-color: #8fd19e;
+}
+
+body {
+    background: url('/static/img/bg.jpg') no-repeat top center fixed;
+}
+
+
+.line {
+    background: #fff;
+    margin: 5px 0;
+}
+
+a:hover, a:link, a:visited, a:active, a:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.yellow {
+    font-size: 15px;
+    border-radius: 20px;
+    line-height: 30px;
+    height: 40px;
+    background: #34ce57;
+}
+
+.yellow:hover {
+    font-size: 20px;
+    background: #ddaa11;
+    box-shadow: 2px 2px 5px #999;
+    transform: translateY(-1px);
+}
+
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 10px;
+    margin-right: 10px;
+    position: relative;
+}
+
+.grey {
+    background-color: #eee;
+}
+
+caption {
+    color: #8fd19e;
+}
+
+blockquote {
+    background-color: #eee;
+    padding: 0 10px
+}
+

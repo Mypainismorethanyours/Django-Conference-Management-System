@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}User edit{% endblock %}
+
+{% block body %}
+    <div id="main" class="container">
+        <form method="post">
+            <div class="form-group">
+                <label for="inputName">nickname</label>
+                <input type="text" class="form-control" id="inputName" name="nickname" value="{{ user.nickname }}">
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">email</label>
+                <input type="text" class="form-control" id="inputEmail" name="email" value="{{ user.email }}">
+            </div>
+            <div class="form-group">
+                <label>username</label>
+                <input type="text" class="form-control" name="username" value="{{ user.username }}" required>
+            </div>
+            <div class="form-group">
+                <label>password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+            <div class="form-group">
+                <label>role</label>
+                <select class="form-control" name="role">
+                    <option value="visitors" {% if user.role_r == 'visitors' %}selected{% endif %}>visitor</option>
+                    <option value="lucky_draw" {% if user.role_r == 'lucky_draw' %}selected{% endif %}>lucky drawer</option>
+                    <option value="judges" {% if user.role_r == 'judges' %}selected{% endif %}>judges</option>
+                    <option value="senior_judges" {% if user.role_r == 'senior_judges' %}selected{% endif %}>senior judge
+                    </option>
+                    <option value="poster_manager" {% if user.role_r == 'poster_manager' %}selected{% endif %}>posters manager
+                    </option>
+                    <option value="admin" {% if user.role_r == 'admin' %}selected{% endif %}>admin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>department</label>
+                <select class="form-control" name="college" id="college">
+                    <option value="college">select</option>
+                    {% for grade in grades %}
+                        <option value="{{ grade.college }}"
+                                {% if user.grade_r.college == grade.college %}selected{% endif %}>{{ grade.college }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>major</label>
+                <select class="form-control" name="major" id="major">
+                    <option value="">{{ user.grade_r.major }}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-warning">submit</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extends_script %}
+    <script>
+        $("#college").change(function () {
+            const major_select = $('#major')
+            $.ajax({
+                type: "GET",
+                url: "/users/majors/",
+                data: {"college": $(this).val()},
+                success: function (data) {
+                    const majors = data.majors
+                    $("#major option").remove();
+                    for (const i in majors) {
+                        const item = "<option value='" + majors[i] + "'>" + majors[i] + "</option>"
+                        major_select.append(item)
+                    }
+                }
+            })
+        })
+    </script>
+{% endblock %}
+

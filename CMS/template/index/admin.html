@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User list{% endblock %}
+
+{% block body %}
+    <div id="main" class="container col-sm-12">
+        <div class="col-sm-12" style="background-color: #eee; display: inline-block">
+            <table class="table table-striped table-bordered" style="font-size:12px">
+                <caption>User list</caption>
+                <thead>
+                <tr>
+                    <th>User name</th>
+                    <th>nickname</th>
+                    <th>email</th>
+                    <th>role</th>
+                    <th>department</th>
+                    <th>major</th>
+                    <th>option</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td width="10%">{{ user.username }}</td>
+                        <td width="10%">{{ user.nickname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.grade_r.college }}</td>
+                        <td>{{ user.grade_r.major }}</td>
+                        <td width="17%">
+                            <a type="button" id="edit" class="btn btn-success btn-sm" href="/users/{{ user.id }}/"
+                               style="color: #eee">edit</a>
+                            <a type="button" id="delete" class="btn btn-danger btn-sm" sid="{{ user.id }}"
+                               style="color: #eee" s
+                               href="javascript:;" onclick="deleteStudent(this)">delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% include 'paginator.html' %}
+{#        <div class="col-sm-1">#}
+{#            <div class="panel panel-info">#}
+{#                <div class="panel-heading">会议信息</div>#}
+{#                <div class="panel-body">#}
+{#                    <ul class="list-group">#}
+{#                        <li class="list-group-item">Cras justo odio</li>#}
+{#                        <li class="list-group-item">Dapibus ac facilisis in</li>#}
+{#                        <li class="list-group-item">Morbi leo risus</li>#}
+{#                        <li class="list-group-item">Porta ac consectetur ac</li>#}
+{#                        <li class="list-group-item">Vestibulum at eros</li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+    </div>
+{% endblock %}
+
+{% block extends_style %}
+    <style>
+        .navbar {
+            height: 35px;
+            line-height: 45px;
+            text-align: center;
+            font-size: 25px;
+        }
+
+        #main {
+            margin-top: 5%;
+        }
+    </style>
+{% endblock %}
+{% block extends_script %}
+    <script>
+        // 回车搜索
+        $(document).on("keydown", function () {
+            listendown(event);
+        });
+
+        function listendown(e) {
+            if (!e) e = window.event;
+            if (e.keyCode == 13) {
+                const nickname = $('#search').val()
+                const url = "/users/users/" + "?nickname=" + nickname
+                window.location.replace(url)
+            }
+        }
+
+        {#点击删除操作事件#}
+
+        function deleteStudent(e) {
+            const userId = e.getAttribute('sid')
+            $.ajax({
+                type: "DELETE",
+                url: "/users/" + userId + "/",
+                success: function (data) {
+                    window.location.replace('/users/admin-users/')
+                }
+            })
+        }
+    </script>
+{% endblock %}
+</html>

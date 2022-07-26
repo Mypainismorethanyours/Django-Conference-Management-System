@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Hello, welcome</h1>
+            <p class="lead">Please enter your email address and we will send you the voting link by email. After receiving the email, click the link to vote and draw</p>
+            <hr class="my-4">
+            <form action="users/send_email/" method="post">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email: </label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <button type="submit" class="btn btn-outline-info">send</button>
+                {% if not user.is_authenticated %}
+                <a href="/users/login/" class="btn btn-outline-primary right">go to register</a>
+                {% endif %}
+            </form>
+            <br>
+        </div>
+    </div>
+{% endblock %}

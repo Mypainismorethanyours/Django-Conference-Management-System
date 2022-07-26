@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Lucky Draw{% endblock %}
+
+
+{% block body %}
+    <div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar"
+                 id="progressbar"
+                 aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+        </div>
+        <br>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h3 style="text-align: center">Lucky moment</h3>
+                <br>
+                <br>
+                <h1 style="text-align: center" id="content">Draw people</h1>
+                <div style="text-align: right; margin: 10% 0 0 0">
+                    <button id="luck_btn" class="btn btn-info btn text-white" onclick="start_luck()">Began to draw</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extends_script %}
+    <script>
+        var interval;
+        function start_luck() {
+            const bar = $('#progressbar')
+            const content = $('#content')
+            const btn = $('#luck_btn')
+            btn.attr("disabled", "disabled")
+            clearInterval(interval);
+            $.ajax({
+                type: "GET",
+                url: "/users/luck_member/",
+                success: function (data) {
+                    const member = data.member
+                    let start = 0
+                    bar.css("width", start)
+                    interval = setInterval(function () {
+                        start += 1
+                        if (start > 100) {
+                            content.html(data.luck_p)
+                            btn.removeAttr("disabled")
+                            return
+                        }
+                        const index = Math.floor((Math.random() * member.length))
+                        content.html(member[index])
+                        bar.css('width', start + '%')
+                    }, 100)
+                }
+            })
+        }
+    </script>
+{% endblock %}

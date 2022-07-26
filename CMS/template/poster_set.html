@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Posters{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-2">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+                   href="#list-post_1" role="tab" aria-controls="post_1">Excellent</a>
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                   href="#list-post_2" role="tab" aria-controls="post_2">Best</a>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-post_1" role="tabpanel"
+                     aria-labelledby="list-post_1-list">
+                    {% for i in post_1 %}
+                        <div class="card" style="width: 24%; display: inline-block; margin: 2px 2px;">
+                            <img src="/{{ i.image_path }}/" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title"
+                                    style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                                    data-toggle="tooltip" data-placement="left" title="{{ i.title }}"><strong
+                                        style="color: cornflowerblue">Title:</strong> {{ i.title }}</h5>
+                                <p class="card-text"
+                                   style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                                   data-toggle="tooltip" data-placement="left" title="{{ i.summary }}">
+                                    <strong style="color: cornflowerblue">Abstract:</strong> {{ i.summary }}
+                                </p>
+                                <p class="card-text">
+                                    <strong style="color: cornflowerblue">Preliminary Score:</strong> {{ i.one_score }}
+                                </p>
+                                <p class="card-text">
+                                    <strong style="color: cornflowerblue">Head judge Score:</strong> {{ i.two_score }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="tab-pane fade" id="list-post_2" role="tabpanel" aria-labelledby="list-post_2-list">
+                    {% for i in post_2 %}
+                        <div class="card" style="width: 24%; display: inline-block; margin: 2px 2px;">
+                            <img src="/{{ i.image_path }}/" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title"
+                                    style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                                    data-toggle="tooltip" data-placement="left" title="{{ i.title }}"><strong
+                                        style="color: cornflowerblue">Title:</strong> {{ i.title }}</h5>
+                                <p class="card-text"
+                                   style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                                   data-toggle="tooltip" data-placement="left" title="{{ i.summary }}">
+                                    <strong style="color: cornflowerblue">Abstract:</strong> {{ i.summary }}
+                                </p>
+                                <p class="card-text">
+                                    <strong style="color: cornflowerblue">Preliminary Score:</strong> {{ i.one_score }}
+                                </p>
+                                <p class="card-text">
+                                    <strong style="color: cornflowerblue">Head judge Score:</strong> {{ i.two_score }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

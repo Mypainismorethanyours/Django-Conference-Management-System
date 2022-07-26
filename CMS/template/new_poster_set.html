@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Posters{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-2">
+            <div class="list-group" id="list-tab" role="tablist">
+                {% for c, m in grades %}
+                    <a class="list-group-item list-group-item-action" data-toggle="list"
+                   href="#list-{{ c }}-{{ m }}" role="tab"><strong>Department: </strong>{{ c }}<br><strong>Major: </strong>{{ m }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-10">
+            <div class="tab-content" id="nav-tabContent">
+            {% for t in posters %}
+                <div class="tab-pane fade show" id="list-{{ t.college }}-{{ t.major }}" role="tabpanel"
+                     aria-labelledby="list-post_1-list">
+                    {% for i in t.posters %}
+                        <div class="card" style="width: 24%; display: inline-block; margin: 2px 2px;">
+                            <img src="/{{ i.image_path }}/" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title"
+                                    style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                                    data-toggle="tooltip" data-placement="left" title="{{ i.title }}"><strong
+                                        style="color: cornflowerblue">Title:</strong> {{ i.title }}</h5>
+                                <p class="card-text"
+                                   style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                                   data-toggle="tooltip" data-placement="left" title="{{ i.summary }}">
+                                    <strong style="color: cornflowerblue">Abstract:</strong> {{ i.summary }}
+                                </p>
+                                <p class="card-text">
+                                    <strong style="color: cornflowerblue">Preliminary Score:</strong> {{ i.one_score }}
+                                </p>
+                                <p class="card-text">
+                                    <strong style="color: cornflowerblue">Head Score:</strong> {{ i.two_score }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

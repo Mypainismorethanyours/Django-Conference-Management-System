@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Posters management{% endblock %}
+
+{% block body %}
+    <div id="tip" class="alert alert-success" style="font-weight: bold; text-align: center; font-size: 25px"
+         hidden></div>
+    <div id="main" class="container col-sm-12">
+        {% if user.role == 'poster_manager' %}
+            <div>
+                <a href="/users/add_poster/" class="btn btn-info" style="width: 100%; margin: 0 0 10px 0">new</a>
+            </div>
+        {% endif %}
+        <div class="col-sm-12" style="margin: 0; padding: 0">
+            {% for i in page %}
+                <div class="card" style="width: 24%; display: inline-block; margin: 2px 2px;">
+                    <img src="/{{ i.image_path }}/" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                            data-toggle="tooltip" data-placement="left" title="{{ i.title }}"><strong
+                                style="color: cornflowerblue">Title:</strong> {{ i.title }}</h5>
+                        <p class="card-text" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                           data-toggle="tooltip" data-placement="left" title="{{ i.summary }}">
+                            <strong style="color: cornflowerblue">Abstract:</strong> {{ i.summary }}
+                        </p>
+                        <p class="card-text"><strong style="color: cornflowerblue">number of votes: </strong>{{ i.vote_number }}</p>
+                        {% if user.role == 'visitors' %}
+                            <div class="float-right">
+                                <a href="/users/poster/{{ i.id }}/vote/"
+                                   class="btn btn-sm btn-success text-white">vote</a>
+                            </div>
+                        {% elif user.role == 'judges' %}
+                            {#                            <label style="color: cornflowerblue; font-weight: bold;">分数: </label>#}
+                            <input type="number" id="{{ i.id }}-score" value="{{ i.one_score }}">
+                            <div class="float-right">
+                                <button class="btn btn-sm btn-success text-white" onclick="make_score('{{ i.id }}')">
+                                    score
+                                </button>
+                            </div>
+                        {% elif user.role == 'senior_judges' %}
+                            <p class="card-text" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                               data-toggle="tooltip" data-placement="left" title="{{ i.grade_r.college }}">
+                                <strong style="color: cornflowerblue">department:</strong> {{ i.grade_r.college }}
+                            </p>
+                            <p class="card-text" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
+                               data-toggle="tooltip" data-placement="left" title="{{ i.grade_r.major }}">
+                                <strong style="color: cornflowerblue">major:</strong> {{ i.grade_r.major }}
+                            </p>
+                            {#                            <label  style="color: cornflowerblue; font-weight: bold;">分数: </label>#}
+                            <input type="number" id="{{ i.id }}-score" value="{{ i.two_score }}">
+                            <div class="float-right">
+                                <button class="btn btn-sm btn-success text-white" onclick="make_score('{{ i.id }}')">
+                                    score
+                                </button>
+                            </div>
+                        {% else %}
+                            <div class="float-right">
+                                <a href="/users/delete_poster/{{ i.id }}/" class="btn btn-sm btn-secondary">delete</a>
+                                <a href="/users/edit_poster/{{ i.id }}/" class="btn btn-sm btn-info">edit</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="alert alert-info">No poster</div>
+            {% endfor %}
+        </div>
+        {% include 'paginator.html' %}
+    </div>
+{% endblock %}
+
+
+{% block extends_script %}
+    <script>
+        function make_score(p_id) {
+            const name = '#' + p_id + '-score'
+            const score_item = $(name)
+            const tip = $('#tip')
+            $.ajax({
+                type: "POST",
+                url: "/users/poster/" + p_id + "/score/",
+                data: {"score": score_item.val()},
+                success: function (data) {
+                    tip.html('score success')
+                    tip.removeAttr('hidden')
+                    setTimeout(function () {
+                        tip.html('')
+                        tip.attr('hidden', 'hidden')
+                    }, 1500)
+                    {#window.location.reload()#}
+                }
+            })
+        }
+    </script>
+{% endblock %}
